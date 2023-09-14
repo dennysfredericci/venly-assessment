@@ -5,27 +5,37 @@ import io.venly.assessment.dto.RelationDTO;
 import io.venly.assessment.entity.RelationEntity;
 import io.venly.assessment.entity.WordEntity;
 import io.venly.assessment.repository.RelationRepository;
+import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class RelationServiceTest {
 
-    @InjectMocks
+    @Autowired
     private RelationService relationService;
-    @Mock
+    @MockBean
     private RelationRepository relationRepository;
 
     @Captor
     private ArgumentCaptor<RelationEntity> relationEntityArgumentCaptor;
+
+    @Test
+    void shouldAcceptOnlyLettersSpace() {
+        assertThatThrownBy(() -> relationService.create(new CreateRelationDTO("!@#$", "RELATED", "NORRIS")))
+                .isInstanceOf(ConstraintViolationException.class)
+                .hasMessage("create.createRelationDTO.word1: Only lowercase letters, uppercase letters, and spaces are allowed");
+    }
 
     @Test
     void shouldSaveWordsAndRelationLowerCaseAndTrimmed() {

@@ -1,4 +1,12 @@
 package io.venly.assessment.dto;
 
-public record CreateRelationDTO(String word1, String relation, String word2) {
-}
+import jakarta.validation.constraints.Pattern;
+
+public record CreateRelationDTO(
+        @Pattern(regexp = "^[a-zA-Z ]+$", message = "Only lowercase letters, uppercase letters, and spaces are allowed")
+        String word1,
+        @Pattern(regexp = "^[a-zA-Z ]+$", message = "Only lowercase letters, uppercase letters, and spaces are allowed")
+        String relation,
+        @Pattern(regexp = "^[a-zA-Z ]+$", message = "Only lowercase letters, uppercase letters, and spaces are allowed")
+        String word2
+) { }
