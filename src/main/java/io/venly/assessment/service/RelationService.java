@@ -5,6 +5,7 @@ import io.venly.assessment.dto.RelationDTO;
 import io.venly.assessment.entity.RelationEntity;
 import io.venly.assessment.entity.WordEntity;
 import io.venly.assessment.repository.RelationRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,18 +43,21 @@ public class RelationService {
     public void create(CreateRelationDTO createRelationDTO) {
 
         WordEntity word1 = new WordEntity();
-        word1.setValue(createRelationDTO.word1());
+        word1.setValue(trimAndLowerCase(createRelationDTO.word1()));
 
         WordEntity word2 = new WordEntity();
-        word2.setValue(createRelationDTO.word2());
+        word2.setValue(trimAndLowerCase(createRelationDTO.word2()));
 
         RelationEntity relationEntity = new RelationEntity();
-        relationEntity.setType(createRelationDTO.relation());
+        relationEntity.setType(trimAndLowerCase(createRelationDTO.relation()));
         relationEntity.setWord1(word1);
         relationEntity.setWord2(word2);
 
         this.relationRepository.save(relationEntity);
     }
 
+    private String trimAndLowerCase(String value) {
+        return StringUtils.trim(StringUtils.lowerCase(value));
+    }
 
 }

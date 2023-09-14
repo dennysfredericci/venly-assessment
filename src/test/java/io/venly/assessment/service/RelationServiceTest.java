@@ -8,9 +8,7 @@ import io.venly.assessment.repository.RelationRepository;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -25,6 +23,20 @@ class RelationServiceTest {
     private RelationService relationService;
     @Mock
     private RelationRepository relationRepository;
+
+    @Captor
+    private ArgumentCaptor<RelationEntity> relationEntityArgumentCaptor;
+
+    @Test
+    void shouldSaveWordsAndRelationLowerCaseAndTrimmed() {
+        relationService.create(new CreateRelationDTO("CHUCK", "RELATED", "NORRIS"));
+        verify(relationRepository).save(relationEntityArgumentCaptor.capture());
+
+        RelationEntity relationEntity = relationEntityArgumentCaptor.getValue();
+        assertThat(relationEntity.getWord1().getValue()).isEqualTo("chuck");
+        assertThat(relationEntity.getType()).isEqualTo("related");
+        assertThat(relationEntity.getWord2().getValue()).isEqualTo("norris");
+    }
 
     @Test
     void shouldCreateRelation() {
