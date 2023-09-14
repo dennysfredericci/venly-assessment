@@ -1,9 +1,11 @@
 package io.venly.assessment.controller;
 
 import io.micrometer.common.util.StringUtils;
+import io.venly.assessment.dto.CreateRelationDTO;
 import io.venly.assessment.dto.RelationDTO;
 import io.venly.assessment.service.RelationService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +30,11 @@ public class RelationController {
             return relationService.listAll();
         }
 
+    }
+
+    @PostMapping("/v1/relations")
+    public void create(CreateRelationDTO createRelationDTO) {
+        relationService.create(createRelationDTO);
     }
 
 }

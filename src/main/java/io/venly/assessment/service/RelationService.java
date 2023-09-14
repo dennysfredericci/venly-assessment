@@ -1,7 +1,9 @@
 package io.venly.assessment.service;
 
+import io.venly.assessment.dto.CreateRelationDTO;
 import io.venly.assessment.dto.RelationDTO;
 import io.venly.assessment.entity.RelationEntity;
+import io.venly.assessment.entity.WordEntity;
 import io.venly.assessment.repository.RelationRepository;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +38,22 @@ public class RelationService {
                 relationEntity.getWord2().getValue()
         );
     }
+
+    public void create(CreateRelationDTO createRelationDTO) {
+
+        WordEntity word1 = new WordEntity();
+        word1.setValue(createRelationDTO.word1());
+
+        WordEntity word2 = new WordEntity();
+        word2.setValue(createRelationDTO.word2());
+
+        RelationEntity relationEntity = new RelationEntity();
+        relationEntity.setType(createRelationDTO.relation());
+        relationEntity.setWord1(word1);
+        relationEntity.setWord2(word2);
+
+        this.relationRepository.save(relationEntity);
+    }
+
 
 }

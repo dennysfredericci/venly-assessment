@@ -15,12 +15,12 @@ public class RelationEntity {
     @SequenceGenerator(name = "relation_sequence", sequenceName = "relation_sequence", initialValue = 1, allocationSize = 1)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private WordEntity word1;
 
     @Column(nullable = false)
     private String type;
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private WordEntity word2;
 
     public Long getId() {

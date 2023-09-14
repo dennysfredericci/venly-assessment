@@ -1,8 +1,10 @@
 package io.venly.assessment.controller;
 
+import io.venly.assessment.dto.CreateRelationDTO;
 import io.venly.assessment.dto.RelationDTO;
 import io.venly.assessment.service.RelationService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -10,8 +12,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,6 +27,18 @@ class RelationControllerTest {
 
     @MockBean
     private RelationService relationService;
+
+    @Test
+    void shouldCreateRelation() throws Exception {
+
+        mockMvc.perform(post("/v1/relations")
+                .contentType("application/json")
+                .content("{\"word1\":\"chuck\",\"relation\":\"related\",\"word2\":\"norris\"}")
+        ).andExpect(status().is2xxSuccessful());
+
+        verify(relationService).create(Mockito.any(CreateRelationDTO.class));
+
+    }
 
     @Test
     void shouldReturnRelationsOfTypeRelated() throws Exception {

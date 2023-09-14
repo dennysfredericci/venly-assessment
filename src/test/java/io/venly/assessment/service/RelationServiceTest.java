@@ -1,5 +1,6 @@
 package io.venly.assessment.service;
 
+import io.venly.assessment.dto.CreateRelationDTO;
 import io.venly.assessment.dto.RelationDTO;
 import io.venly.assessment.entity.RelationEntity;
 import io.venly.assessment.entity.WordEntity;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class RelationServiceTest {
@@ -23,6 +25,12 @@ class RelationServiceTest {
     private RelationService relationService;
     @Mock
     private RelationRepository relationRepository;
+
+    @Test
+    void shouldCreateRelation() {
+        relationService.create(new CreateRelationDTO("chuck", "related", "norris"));
+        verify(relationRepository).save(Mockito.any(RelationEntity.class));
+    }
 
     @Test
     void shouldReturnRelationsOfTypeRelated() {
