@@ -45,6 +45,10 @@ public class RelationService {
 
     public void create(@Valid CreateRelationDTO createRelationDTO) {
 
+        if (relationRepository.alreadyExists(createRelationDTO.word1(), createRelationDTO.relation(), createRelationDTO.word2())) {
+            throw new RelationAlreadyExists(createRelationDTO);
+        }
+
         WordEntity word1 = new WordEntity();
         word1.setValue(trimAndLowerCase(createRelationDTO.word1()));
 
