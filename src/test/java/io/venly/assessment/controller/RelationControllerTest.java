@@ -25,6 +25,17 @@ class RelationControllerTest {
     private RelationService relationService;
 
     @Test
+    void shouldReturnRelationsOfTypeRelated() throws Exception {
+
+        when(relationService.listByType("related")).thenReturn(getRelatedRelations());
+
+        mockMvc.perform(get("/v1/relations?type=related")
+                        .contentType("application/json"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().json("[{\"word1\":\"road\",\"relation\":\"related\",\"word2\":\"street\"},{\"word1\":\"synonym\",\"relation\":\"related\",\"word2\":\"match\"}]"));
+    }
+
+    @Test
     void shouldReturnAllRelations() throws Exception {
 
         when(relationService.listAll()).thenReturn(getRelations());
@@ -40,6 +51,13 @@ class RelationControllerTest {
                 getRelation("road", "related", "street"),
                 getRelation("son", "antonym", "daughter"),
                 getRelation("good", "synonym", "great")
+        );
+    }
+
+    private List<RelationDTO> getRelatedRelations() {
+        return List.of(
+                getRelation("road", "related", "street"),
+                getRelation("synonym", "related", "match")
         );
     }
 

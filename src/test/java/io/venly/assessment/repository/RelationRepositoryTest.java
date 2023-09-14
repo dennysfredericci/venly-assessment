@@ -19,6 +19,13 @@ class RelationRepositoryTest {
     private WordRepository wordRepository;
 
     @Test
+    void shouldFindByType() {
+        List<RelationEntity> relations = relationRepository.findByType("related");
+        assertThat(relations).hasSize(2);
+        assertThat(relations).extracting("type").containsOnly("related");
+    }
+
+    @Test
     void shouldReturnAll() {
         List<RelationEntity> relations = relationRepository.findAll();
         assertThat(relations).hasSize(5);

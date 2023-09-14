@@ -25,6 +25,21 @@ class RelationServiceTest {
     private RelationRepository relationRepository;
 
     @Test
+    void shouldReturnRelationsOfTypeRelated() {
+        Mockito.when(relationRepository.findByType("related")).thenReturn(List.of(
+                getRelation("road", "related", "street")
+        ));
+
+        List<RelationDTO> relationDTOS = relationService.listByType("related");
+
+        assertThat(relationDTOS).hasSize(1);
+        assertThat(relationDTOS).extracting("word1", "relation", "word2")
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple("road", "related", "street"));
+
+    }
+
+    @Test
     void shouldReturnAllRelations() {
 
         Mockito.when(relationRepository.findAll()).thenReturn(List.of(

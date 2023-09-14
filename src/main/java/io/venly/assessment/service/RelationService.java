@@ -23,6 +23,12 @@ public class RelationService {
                 .collect(Collectors.toList());
     }
 
+    public List<RelationDTO> listByType(String relationType) {
+        return this.relationRepository.findByType(relationType).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     private RelationDTO toDTO(RelationEntity relationEntity) {
         return new RelationDTO(
                 relationEntity.getWord1().getValue(),
